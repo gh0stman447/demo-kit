@@ -1,0 +1,91 @@
+@use './src/app/styles/variables/variables';
+@use "./src/app/styles/reset";
+
+.app {
+  background: variables.$white;
+  color: variables.$black;
+  height: 100%;
+  width: 100%;
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+[data-theme='dark'] {
+  .app {
+    color: variables.$white;
+    background: variables.$midnight-dream;
+  }
+
+  :global(mark) {
+    background: variables.$turquoise;
+  }
+
+  :global(.scroller) {
+    &::-webkit-scrollbar {
+      background-color: transparent;
+      width: 1.75rem;
+    }
+
+    &::-webkit-scrollbar-thumb {
+      background: rgba(180, 186, 192);
+      z-index: 10000;
+      border-radius: 10px;
+      border: 6px solid transparent;
+      background-clip: padding-box;
+    }
+
+    &::-webkit-scrollbar-track {
+      background: rgba(105, 117, 130);
+      border: 6px solid rgba(62, 84, 101, 1);
+      border-radius: 10px;
+    }
+  }
+}
+
+:global(.Dashlet) {
+  border-radius: 0;
+  margin: 0;
+}
+
+:global(.Dashboards__ListItem) {
+  padding: 0 !important;
+}
+
+:global(.Dashboard) {
+  border-radius: 0;
+}
+
+:global(.Dashlet__Footer) {
+  display: none;
+}
+
+:global(.scroller) {
+  &::-webkit-scrollbar {
+    background-color: transparent;
+    width: 1.75rem;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background: rgba(0, 0, 0, 0.3);
+    z-index: 10000;
+    border-radius: 10px;
+    min-height: 3rem;
+    border: 6px solid transparent;
+    background-clip: padding-box;
+  }
+
+  &::-webkit-scrollbar-track {
+    background: rgba(0, 0, 0, 0.15);
+    border: 6px solid white;
+    border-radius: 10px;
+  }
+
+  &::-webkit-scrollbar-button:start,
+  &::-webkit-scrollbar-button:end {
+    background-repeat: no-repeat;
+    background-position: center;
+  }
+}
+
+:global(mark) {
+  background: variables.$fresh-green;
+}

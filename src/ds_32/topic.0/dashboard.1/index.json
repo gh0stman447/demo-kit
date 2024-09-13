@@ -1,0 +1,15 @@
+{
+  "topic_id": 0,
+  "icon_id": 0,
+  "title": "Demo ui kit",
+  "is_hidden": 0,
+  "srt": 2147483647,
+  "config": {
+    "icon": "noIcon",
+    "viewport": {
+      "h": 1,
+      "w": 1
+    }
+  },
+  "created": "2023-01-25T16:09:18.128944+03:00"
+}
