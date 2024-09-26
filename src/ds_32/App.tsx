@@ -1,72 +1,50 @@
 import React, { useEffect, useState } from 'react'
 import '../output.css'
 
-import { Button, GanttChart, ThemeProvider, VerticalBarChart, TaskDataType, xAxisDataType } from '@ekp/ui-core'
+import { Button, ThemeProvider, PieChart } from '@ekp/ui-core'
 
-import { tasksData, xData } from '../components/GanttChart/data'
-
-import styles from '../components/GanttChart/styles.module.css'
-import styles2 from '../components/VerticalBarChart/styles.module.css'
-
-import { VerticalBarChartData, xAxisData as xAxisVerticalBarChartData } from '../components/VerticalBarChart/data'
-
-import { getData } from './src/services/api'
+import { COLORS } from '../constants/PieColor'
+import { MultipleSelect } from '../components/Select'
+import { DataItem, getAllFilters, getData } from './src/services/api'
 
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore
 
-// import cls from './App.module.scss'
-
 const App = () => {
-  // useEffect(() => {
-  //   getData({}, '').then((res) => console.log(res))
-  // }, [])
+  const [allFilters, setAllFilters] = useState<string[]>([])
+  const [filter, setFilter] = useState<string[]>([])
 
-  const [tasks] = useState<TaskDataType[]>(tasksData)
-  const [xAxisData] = useState<xAxisDataType[]>(xData)
+  const [serverData, setServerData] = useState<DataItem[]>([])
 
-  const [_VerticalBarChartData] = useState(VerticalBarChartData)
-  const [_xAxisData] = useState(xAxisVerticalBarChartData)
+  useEffect(() => {
+    getAllFilters('allFilters').then((res) => {
+      setAllFilters(res)
+    })
+  }, [])
+
+  useEffect(() => {
+    getData(
+      {
+        // value_dm: ['>', 400],
+        name_variable_dm: ['=', ...filter]
+      },
+      'request'
+    ).then((res) => setServerData(res))
+  }, [filter])
 
   return (
-    <ThemeProvider initialTheme="light">
-      <div>
-        {/* <Button variant="circleIcon" size="l" className="m-2 p-1">
-          <NewStarIcon fill="red" width={32} onClick={() => console.log('clicked')} />
-        </Button> */}
+    <ThemeProvider initialTheme="dark">
+      {filter.length ? <Button onClick={() => setFilter([])}>Clear filters</Button> : null}
 
-        <VerticalBarChart
-          size={['100%', 300]}
-          dataSets={[{ name: '123', colors: ['#FF0000'], data: [100], seriesVariants: ['target'] }]}
-          xAxisData={['Столбец']}
-        />
+      <MultipleSelect filters={filter} setFilters={setFilter} allFilters={allFilters} />
 
-        {/* <VerticalBarChart
-          // className={styles2.VerticalBarChartstyles}
-          className="hover:scale-[1.02] shadow-lg duration-300 mt-10"
-          showYAxis
-          barsAreaWidth={50}
-          leftGap={3}
-          rightGap={3}
-          seriesLabelSize={10}
-          dataSets={[
-            {
-              colors: _VerticalBarChartData.firstData.colors,
-              data: _VerticalBarChartData.firstData.data,
-              name: _VerticalBarChartData.firstData.name,
-              seriesVariants: _VerticalBarChartData.firstData.seriesVariants
-            },
-            {
-              colors: _VerticalBarChartData.secondData.colors,
-              data: _VerticalBarChartData.secondData.data,
-              name: _VerticalBarChartData.secondData.name,
-              seriesVariants: _VerticalBarChartData.secondData.seriesVariants
-            }
-          ]}
-          size={['100%', 300]}
-          xAxisData={_xAxisData}
-        /> */}
-      </div>
+      <PieChart
+        chartsConfig={{
+          dataSet: serverData,
+          color: COLORS
+        }}
+        onClick={() => console.log('clicked')}
+      />
     </ThemeProvider>
   )
 }
